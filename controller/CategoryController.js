@@ -1,5 +1,5 @@
-const conn = require("../mariadb"); //db module
-const { StatusCodes } = require("http-status-codes"); //status codes module
+const conn = require("../mariadb");
+const { StatusCodes } = require("http-status-codes");
 
 const allCategory = (req, res) => {
   //카테고리 전체 목록 리스트
