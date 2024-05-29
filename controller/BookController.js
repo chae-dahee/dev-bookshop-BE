@@ -1,5 +1,5 @@
-const conn = require("../mariadb"); //db module
-const { StatusCodes } = require("http-status-codes"); //status codes module
+const conn = require("../mariadb");
+const { StatusCodes } = require("http-status-codes");
 
 //(요약된)전체 도서 조회 + 카테고리별 조회 + 신간 여부
 const allBooks = (req, res) => {
