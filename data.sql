@@ -54,6 +54,14 @@ SELECT *, (SELECT count(*) FROM Bookshop.likes WHERE liked_book_id = books.id) a
 // 좋아요 삭제
 DELETE FROM likes WHERE user_id = 1 AND liked_book_id = 3;
 
+//좋아요 포함한 개별 도서 조회
+SELECT *
+  , (SELECT count(*) FROM Bookshop.likes WHERE liked_book_id = books.id) as likes
+  ,(SELECT EXISTS (SELECT * FROM likes WHERE user_id = 1 AND liked_book_id=1)) AS liked
+   FROM books
+   LEFT JOIN category ON books.category_id = category.category_id
+   WHERE books.id=1
+
 // 장바구니 담기
 INSERT INTO cartItems (book_id, quantity, user_id) VALUES (1, 1, 1);
 
@@ -62,7 +70,7 @@ SELECT cartItems.id, book_id, title, summary, quantity, price
 FROM cartItems LEFT JOIN books 
 ON cartItems.book_id = books.id;
 
-// 장바구니 아이템 조회
+// 장바구니 아이템 삭제
 DELETE FROM cartItems WHERE id = ?;
 
 // 장바구니에서 선택한(장바구니 도서 id) 아이템 목록 조회 (=선택한 장바구니 상품 목록 조회)
