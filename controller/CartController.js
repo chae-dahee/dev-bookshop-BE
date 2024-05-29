@@ -1,6 +1,5 @@
 const conn = require("../mariadb");
 const { StatusCodes } = require("http-status-codes");
-const { get } = require("../router/users");
 
 //장바구니 담기
 const addToCart = (req, res) => {
