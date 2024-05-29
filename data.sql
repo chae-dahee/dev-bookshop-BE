@@ -48,6 +48,8 @@ INSERT INTO likes (user_id, liked_book_id) VALUES (2, 2);
 INSERT INTO likes (user_id, liked_book_id) VALUES (2, 3);
 INSERT INTO likes (user_id, liked_book_id) VALUES (2, 5);
 
+//좋아요 개수 확인
+SELECT *, (SELECT count(*) FROM Bookshop.likes WHERE liked_book_id = books.id) as likes FROM books ;
 
 // 좋아요 삭제
 DELETE FROM likes WHERE user_id = 1 AND liked_book_id = 3;
