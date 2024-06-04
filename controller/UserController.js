@@ -47,11 +47,12 @@ const login = (req, res) => {
       //토근 발행
       const token = jwt.sign(
         {
+          id: loginUser.id,
           email: loginUser.email,
         },
         process.env.PRIVATE_KEY,
         {
-          expiresIn: "5m",
+          expiresIn: "20m",
           issuer: "dah",
         }
       );
