@@ -38,8 +38,13 @@ const allBooks = (req, res) => {
       // return res.status(StatusCodes.BAD_REQUEST).end();
     }
     console.log(results);
-    if (results.length) allBooksRes.books = results;
-    else return res.status(StatusCodes.NOT_FOUND).end();
+    if (results.length) {
+      results.map((res) => {
+        res.pubDate = res.pub_date;
+        delete res.pub_date;
+      });
+      allBooksRes.books = results;
+    } else return res.status(StatusCodes.NOT_FOUND).end();
   });
 
   sql = "SELECT found_rows();";

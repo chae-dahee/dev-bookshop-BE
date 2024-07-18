@@ -1,6 +1,7 @@
 const conn = require("../mariadb"); //db module
 const { StatusCodes } = require("http-status-codes"); //status codes module
 const jwt = require("jsonwebtoken"); //jwt module
+const {generateAccessToken, generateRefreshToken} = require("../auth");
 const crypto = require("crypto"); //crypto module : 암호화
 const dotenv = require("dotenv"); //dotenv module
 dotenv.config();
@@ -22,7 +23,9 @@ const join = (req, res) => {
       console.log(err);
       return res.status(StatusCodes.BAD_REQUEST).end();
     }
-    return res.status(StatusCodes.CREATED).json(results);
+    if (results.affectedRows)
+      return res.status(StatusCodes.CREATED).json(results);
+    else return res.status(StatusCodes.BAD_REQUEST).end();
   });
 };
 
@@ -45,21 +48,12 @@ const login = (req, res) => {
     //DB 비밀번호랑 비교
     if (loginUser && loginUser.password == hashPwd) {
       //토근 발행
-      const token = jwt.sign(
-        {
-          id: loginUser.id,
-          email: loginUser.email,
-        },
-        process.env.PRIVATE_KEY,
-        {
-          expiresIn: "20m",
-          issuer: "dah",
-        }
-      );
+      const accessToken = generateAccessToken({ id: loginUser.id, email: loginUser.email });
+      const refreshToken = generateRefreshToken({ id: loginUser.id });
 
       //토큰 쿠키에 담기
-      res.cookie("token", token, { httpOnly: true });
-      console.log(token);
+      res.cookie("accessToken", accessToken, { httpOnly: true });
+      res.cookie("refreshToken", refreshToken, { httpOnly: true });
       return res.status(StatusCodes.OK).json(results);
     } else {
       return res.status(StatusCodes.UNAUTHORIZED).end();
