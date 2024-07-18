@@ -1,10 +1,22 @@
 const express = require("express");
 const app = express();
+const cors = require("cors"); // cors 패키지를 import
 
 const dotenv = require("dotenv");
 dotenv.config();
 
 app.listen(process.env.PORT);
+
+// CORS 설정
+app.use(
+  cors({
+    origin: "http://localhost:3000", // 프론트엔드 URL을 여기에 설정
+    credentials: true, // 쿠키 허용
+  })
+);
+
+// 미들웨어 설정 (예: JSON 파싱)
+app.use(express.json());
 
 const userRouter = require("./router/users");
 const bookRouter = require("./router/books");
